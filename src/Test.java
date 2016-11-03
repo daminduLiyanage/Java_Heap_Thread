@@ -1,14 +1,23 @@
-//import java.util.ArrayList;
-//
-///**
-// * Created by Damindu on 11/2/2016.
-// */
-//public class Test {
-//    public static void main(String[] args){
-//        ArrayList<Integer> list = new ArrayList<>();
-//        for(int i=0; i<10; i++){
-//            list.add(i);
-//        }
-//        System.out.println(list);
-//    }
-//}
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Damindu on 11/2/2016.
+ */
+public class Test {
+    public static void main(String[] args){
+        List<Integer> list = new ArrayList();
+        list.add(2);
+        list.add(4);
+        list.add(1);
+        list.add(10);
+        list.add(3);
+        System.out.println("Unsorted List: "+list);
+        Base base = new Base(list);
+        //Heapsort sort = new Heapsort(list);
+        //System.out.println(list);
+    }
+
+
+
+}

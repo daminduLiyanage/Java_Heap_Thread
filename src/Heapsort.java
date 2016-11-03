@@ -1,17 +1,18 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Damindu on 11/1/2016.
  */
 public class Heapsort {
-//    ArrayList<Integer> list = new ArrayList();
-//    public Heapsort(ArrayList<Integer> list){
-//        this.list = list;
-//        heapSort(this.list);
-//    }
 
-    public static void maxHeapify(ArrayList<Integer> list, int curIndex, int heapSize){
+    List<Integer> list;
+
+    public Heapsort(List<Integer> list){
+        this.list = list;
+        //heapSort(this.list);
+    }
+
+    public synchronized void maxHeapify(List<Integer> list, int curIndex, int heapSize){
         // Left child in heap
         int left = 2*curIndex+1;
         // Right child in heap
@@ -32,7 +33,7 @@ public class Heapsort {
         }
     }
 
-    public static void buildMaxHeap(ArrayList<Integer> list, int heapSize){
+    public synchronized void buildMaxHeap(List<Integer> list, int heapSize){
         // call maxHeapify on all internal nodes
         int lastElementIndex = list.size() - 1;
         int parentIndex = (lastElementIndex - 1)/2;
@@ -41,7 +42,8 @@ public class Heapsort {
         }
     }
 
-    public static void heapSort(ArrayList<Integer> list){
+    public synchronized void heapSort(){//List<Integer> list){
+        List<Integer> list = this.list;
         if(list == null || list.size() < 2)
             return;
 
@@ -54,20 +56,6 @@ public class Heapsort {
         }
     }
 
-    public static void main(String[] args) {
-        ArrayList<Integer> list = new ArrayList();
-        list.add(12);
-        list.add(35);
-        list.add(87);
-        list.add(26);
-        list.add(9);
-        list.add(28);
-        list.add(7);
-        //int[] list = {12, 35, 87, 26, 9, 28, 7};
-        System.out.println("Original List:\t\t" + list);
-        heapSort(list);
-        System.out.println("Sorted List:\t\t" + list);
-    }
 
     /**
      * Swaps i & j list items. (counted from 0)
@@ -75,22 +63,11 @@ public class Heapsort {
      * @param i
      * @param j
      */
-    public static void swap(ArrayList<Integer> list, int i, int j){
-
+    public synchronized void swap(List<Integer> list, int i, int j){
         int temp = list.get(i);
         list.add(i, list.get(j));
-        list.remove(i+1);
+        list.remove(i + 1);
         list.remove(j);
         list.add(j, temp);
     }
-
- //   private void swap(ArrayList<Integer> list, int i, int j) {
-//        int tmp = list[i];
-//        list[i] = list[j];
-//        list[j] = tmp;
-//        int temp = list.get(i);
-//        list.remove(i);
-//
-//
-//    }
 }
