@@ -13,9 +13,8 @@ public class Test {
         list.add(10);
         list.add(3);
         System.out.println("Unsorted List: "+list);
+        System.out.println("*\n*\n*");
         Base base = new Base(list);
-        //Heapsort sort = new Heapsort(list);
-        //System.out.println(list);
     }
 
 

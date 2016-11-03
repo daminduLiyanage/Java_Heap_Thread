@@ -1,5 +1,4 @@
 import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -24,38 +23,44 @@ public class Base {
     Heapsort sort1;
     Heapsort sort2;
 
+    //Locks to avoid Java.Util List concurrent access exceptions. Implemented as a precaution.
+    static Semaphore A = new Semaphore(1);
+    static Semaphore B = new Semaphore(0);
+
+    /**
+     * Base class acts as the base for 3 threads
+     * @param list
+     */
     public Base(List<Integer> list){
         this.list = list;
         split(list, findMidIndex());
-        mainBase();
-        //list.removeAll()
-        System.out.println("list 1:" + list1 +" list 2 :"+list2);
 
+        //values assigned to 1 & 2 threads
         this.sort1 = new Heapsort(this.listA);
         this.threadA = new HeapThread(this.listA, this.sort1);
         this.sort2 = new Heapsort(this.listB);
         this.threadB = new HeapThread(this.listB, this.sort2);
 
         assist();
+
         try{
             this.threadA.join();
             this.threadB.join();
+            //values assigned to thread 3
             this.mergeThread = new HeapMerger(this.listA, this.listB, this.list, this);
             this.mergeThread.join();
         } catch (InterruptedException e){
             System.out.println(e);
         }
-        System.out.println(list);
-        //this.mergeThread = new HeapMerger(list, this.threadA, this.threadB);
+        //output
+        System.out.println("Thread 1 Output:"+listA);
+        System.out.println("Thread 2 Output:"+listB);
+        System.out.println("Thread 3 Output:"+list);
     }
 
-    public static void mainBase(){
-        System.out.print("Static check ok");
-    }
-
-    static Semaphore A = new Semaphore(1);
-    static Semaphore B = new Semaphore(0);
-
+    /**
+     * To start the threads.
+     */
     public void assist(){
         try {
             runA();
@@ -77,25 +82,21 @@ public class Base {
         A.release();
     }
 
-    public int firstArrayEndIndex(){
-        return list.size()/2;
-    }
-
     /**
-     * Divides Array list to 2 parts
-     * @param list
+     * Mid index returned. In an even array left mid index returned.
+     * @return
      */
-    public int secondArrayStartIndex(List<Integer> list){
-        return list.size()/2 + 1;
-    }
-
     public int findMidIndex(){
         return list.size()/2;
     }
 
+    /**
+     * List copied to List A and List B.
+     * @param list
+     * @param midIndex
+     */
     public void split(List<Integer> list, int midIndex){
-        //int partitionSize = IntMath.divide(list.size(), 2, RoundingMode.UP);
-        List<Integer> list1 = list.subList(0, midIndex+1);//+1
+        List<Integer> list1 = list.subList(0, midIndex+1);
         List<Integer> list2 = list.subList(midIndex+1, 5);
         this.list1 = list1;
         this.list2 = list2;
@@ -109,6 +110,12 @@ public class Base {
         }
     }
 
+    /**
+     * List A & B copied to main list. Called from merger thread.
+     * @param listA
+     * @param listB
+     * @param list
+     */
     public void mergeList(List<Integer> listA, List<Integer> listB, List<Integer> list){
         list.clear();
         int pointer = 0;

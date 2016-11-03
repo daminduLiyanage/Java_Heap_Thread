@@ -1,40 +1,33 @@
 import java.util.List;
 
 /**
- * Created by Damindu on 11/1/2016.
+ * Created by Damindu on 11/1/2016. 
  */
 public class Heapsort {
-
     List<Integer> list;
 
     public Heapsort(List<Integer> list){
         this.list = list;
-        //heapSort(this.list);
     }
 
-    public synchronized void maxHeapify(List<Integer> list, int curIndex, int heapSize){
-        // Left child in heap
-        int left = 2*curIndex+1;
-        // Right child in heap
-        int right = 2*curIndex+2;
-        int largest = curIndex;
+    public synchronized void maxHeapify(List<Integer> list, int currentIndex, int heapSize){
+        int left = 2*currentIndex+1;
+        int right = 2*currentIndex+2;
+        int largest = currentIndex;
 
-        if( left < heapSize && list.get(left) > list.get(curIndex) ) {
+        if( left < heapSize && list.get(left) > list.get(currentIndex) ){
             largest = left;
         }
-
-        if( right < heapSize && list.get(right) > list.get(largest) ) {
+        if( right < heapSize && list.get(right) > list.get(largest) ){
             largest = right;
         }
-
-        if( largest != curIndex ){
-            swap(list, curIndex, largest);
+        if( largest != currentIndex ){
+            swap(list, currentIndex, largest);
             maxHeapify(list, largest, heapSize);
         }
     }
 
     public synchronized void buildMaxHeap(List<Integer> list, int heapSize){
-        // call maxHeapify on all internal nodes
         int lastElementIndex = list.size() - 1;
         int parentIndex = (lastElementIndex - 1)/2;
         for(int i = parentIndex; i >= 0; i--){
@@ -42,7 +35,7 @@ public class Heapsort {
         }
     }
 
-    public synchronized void heapSort(){//List<Integer> list){
+    public synchronized void sort(){
         List<Integer> list = this.list;
         if(list == null || list.size() < 2)
             return;
@@ -55,7 +48,6 @@ public class Heapsort {
             maxHeapify(list, 0, heapSize);
         }
     }
-
 
     /**
      * Swaps i & j list items. (counted from 0)

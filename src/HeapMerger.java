@@ -10,6 +10,13 @@ public class HeapMerger extends Thread{
     Base base;
     Heapsort heapsort;
 
+    /**
+     * Thread to merge lists of Thread 1 & 2
+     * @param listA
+     * @param listB
+     * @param list
+     * @param base
+     */
     public HeapMerger(List<Integer> listA, List<Integer> listB, List<Integer> list, Base base){
         this.list = list;
         this.listA = listA;
@@ -19,12 +26,8 @@ public class HeapMerger extends Thread{
         this.start();
     }
 
-    /**
-     * Thread to Merge Threads
-     */
     public void run(){
         base.mergeList(this.listA, this.listB, this.list);
-        this.heapsort.heapSort();
-        System.out.println(list);
+        this.heapsort.sort();
     }
 }
