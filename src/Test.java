@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,13 @@ public class Test {
         System.out.println("Unsorted List: "+list);
         System.out.println("*\n*\n*");
         Base base = new Base(list);
+        System.out.println("\nPress enter to exit");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
 
