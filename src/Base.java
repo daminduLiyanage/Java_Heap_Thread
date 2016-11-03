@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -25,30 +27,38 @@ public class Base {
     public Base(List<Integer> list){
         this.list = list;
         split(list, findMidIndex());
-
+        mainBase();
         //list.removeAll()
         System.out.println("list 1:" + list1 +" list 2 :"+list2);
-
-
 
         this.sort1 = new Heapsort(this.listA);
         this.threadA = new HeapThread(this.listA, this.sort1);
         this.sort2 = new Heapsort(this.listB);
         this.threadB = new HeapThread(this.listB, this.sort2);
 
-
         assist();
+        try{
+            this.threadA.join();
+            this.threadB.join();
+            this.mergeThread = new HeapMerger(this.listA, this.listB, this.list, this);
+            this.mergeThread.join();
+        } catch (InterruptedException e){
+            System.out.println(e);
+        }
+        System.out.println(list);
         //this.mergeThread = new HeapMerger(list, this.threadA, this.threadB);
+    }
+
+    public static void mainBase(){
+        System.out.print("Static check ok");
     }
 
     static Semaphore A = new Semaphore(1);
     static Semaphore B = new Semaphore(0);
 
     public void assist(){
-
         try {
             runA();
-
             runB();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -97,5 +107,20 @@ public class Base {
         for(int i = 0; i<this.list2.size(); i++){
             this.listB.add(list2.get(i));
         }
+    }
+
+    public void mergeList(List<Integer> listA, List<Integer> listB, List<Integer> list){
+        list.clear();
+        int pointer = 0;
+        for (Integer item: listA){
+            list.add(pointer++, item);
+        }
+
+        for (Integer item: listB){
+            list.add(pointer++, item);
+        }
+//        for(Iterator<Integer> i = listA.iterator(); i.hasNext();){
+//            list.add(pointer, i.next())
+//            list.add(, i.next());
     }
 }
